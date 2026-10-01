@@ -47,8 +47,8 @@ On MacOS, you can install IBM Bob Shell using this command:
    - Name = **IBM Bob Shell**
    - Path = **C:\Users\YourUserName\AppData\Roaming\npm\Bob.cmd**
   
-   <br/>The Path will vary depending on your platform. You can run the ```which bob``` command to help you locate the correct path. On MacOS this will be ```/Users/YourUserName/Library/pnpm/bin/bob```.
-   <br />
+   The Path will vary depending on your platform. You can run the ```which bob``` command to help you locate the correct path. On MacOS this will be ```/Users/YourUserName/Library/pnpm/bin/bob```.
+   <br /><br />
    <img src="Images/ACE_Bob02.png" width="500"/>
 
 3. Control will return to the previous Preferences window. From the drop-down menu change the Initial Working Directory to **Eclipse workspace** and then click the **Apply and Close** button.
