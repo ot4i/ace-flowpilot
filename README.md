@@ -1,37 +1,44 @@
 # ace-flowpilot
 This repository provides skill guidance for IBM App Connect Enterprise (ACE) Toolkit users. It combines:
-- setup instructions for running the ace-flowpilot skill inside ACE Toolkit
-- focused skills for creating and explaining ACE artifacts
-- shared ACE reference material for projects, node types, policies, ESQL, and JavaCompute
+- Setup instructions for running the ace-flowpilot skill inside ACE Toolkit
+- Focused skills for creating and explaining ACE artifacts
+- Shared ACE reference material for projects, node types, policies, ESQL, and JavaCompute
 
 ## Who this repository is for
 Use this repository if you want your AI Agent (such as IBM Bob Shell or GitHub Copilot) to help with ACE Toolkit assets such as:
-- message flows (`.msgflow`)
+- Message flows (`.msgflow`)
 - ESQL (`.esql`)
 - JavaCompute classes (`.java`)
-- connector-based flows and related policy files
+- Connector-based flows and related policy files
 
 ## Quick start
-1. Install your AI Agent (such as IBM Bob Shell or GitHub Copilot)
-2. Configure ACE Toolkit to launch IBM Bob Shell in your Eclipse workspace.
-3. Clone this repository into the `.bob\skills` folder in that workspace
-4. Set up the IBM Bob Shell as a Terminal option in ACE Toolkit (instructions below)
+1. Install your AI Agent (such as IBM Bob Shell). If you are using ACE Toolkit 13.0.9.0 or later, GitHub Copilot is already installed)
+2. Configure ACE Toolkit to launch the IBM Bob Shell in your Eclipse workspace.
+3. If you are using ACE Toolkit 13.0.9.0 or later, the skills in this repository are automatically downloaded into the `.bob\skills` and `.github\skills` folders in your Toolkit workspace.
+4. Set up the IBM Bob Shell as a Terminal option in ACE Toolkit (instructions below).
 
 ## What this repository provides
 - ACE Toolkit setup guidance
-- focused ACE skills under [`skills/`](skills)
-- shared ACE guidance under [`skills/shared/`](skills/shared)
-- connector-specific guidance under [`skills/shared/connectors/`](skills/shared/connectors)
-- legacy root-level compatibility stubs for earlier connector file paths
+- Focused ACE skills under [`skills/`](skills)
+- Shared ACE guidance under [`skills/shared/`](skills/shared)
+- Connector-specific guidance under [`skills/shared/connectors/`](skills/shared/connectors)
+- Legacy root-level compatibility stubs for earlier connector file paths
 
 ## Installing IBM Bob Shell
-The ACE Toolkit runs on Windows, Linux, or macOS. You can find detailed instructions for installing IBM Bob Shell on each of these platforms [here](https://bob.ibm.com/docs/shell/getting-started/install-and-setup). Focusing on Windows, you can open PowerShell and install IBM Bob Shell using this command:
+The ACE Toolkit runs on Windows, Linux, or MacOS. For the most up to date information (IBM Bob changes its install mechanism from time to time), find detailed instructions for installing IBM Bob Shell on each of these platforms [here](https://bob.ibm.com/docs/shell/getting-started/install-and-setup).
 
-```irm -Uri "https://bob.ibm.com/download/bobshell.ps1" | iex```
+On Windows, you can install IBM Bob Shell using this command:
+```powershell -ep Bypass "iwr https://bob.ibm.com/download/bobshell.ps1 -OutFile $env:TMP\bob.ps1; &$env:TMP\bob.ps1"```
+
+On Linux, you can install IBM Bob Shell using this command:
+```curl -fsSL https://bob.ibm.com/download/bobshell.sh | bash```
+
+On MacOS, you can install IBM Bob Shell using this command:
+```curl -fsSL https://bob.ibm.com/download/bobshell.sh | bash```
 
 ## Running IBM Bob Shell in ACE Toolkit
 
-1. Start the ACE Toolkit and from the Toolkit's Window menu choose Preferences. When the Preferences pop-up opens navigate to the section **Terminal > Local Terminal** and click the **Add** button on the right-hand side of the window:
+1. Start the ACE Toolkit and if running on Windows or Linux, from the Toolkit's Window menu choose Preferences. If you're running on MacOS then the menu is named Settings instead of Preferences. When the Preferences pop-up opens navigate to the section **Terminal > Local Terminal** and click the **Add** button on the right-hand side of the window:
 
    ![image](Images/ACE_Bob01.png)
 
@@ -39,6 +46,8 @@ The ACE Toolkit runs on Windows, Linux, or macOS. You can find detailed instruct
 
    - Name = **IBM Bob Shell**
    - Path = **C:\Users\YourUserName\AppData\Roaming\npm\Bob.cmd**
+  
+   <br/>The Path will vary depending on your platform. You can run the ```which bob``` command to help you locate the correct path. On MacOS this will be ```/Users/YourUserName/Library/pnpm/bin/bob```.
    <br />
    <img src="Images/ACE_Bob02.png" width="500"/>
 
@@ -74,14 +83,18 @@ The ACE Toolkit runs on Windows, Linux, or macOS. You can find detailed instruct
 
    ![image](Images/ACE_Bob09.png)
 
-## Installing the ACE Bob skills into `.bob`
-When operating IBM Bob Shell in the ACE Toolkit, the earlier configuration steps target your ACE Toolkit Eclipse workspace as the IBM Bob project root directory. To make these skills available for IBM Bob Shell in this context, navigate to this ACE Toolkit Eclipse workspace and, if it does not already exist, create a folder called `.bob`.
+## Installing the ACE Flow Pilot skills into `.bob/skills`
+If you are planning to use IBM Bob Shell in the ACE Toolkit, and if you are using ACE 13.0.9.0 or later, then by default when Toolkit is launched, ACE will automatically place the ace-flowpilot skill into the right filesystem location (`<your ACE Toolkit workspace>/.bob/skills/ace-flowpilot`).
 
-If you want to use IBM Bob across multiple ACE Toolkit workspaces, you might prefer to define ACE skills globally in your user's home directory. Based on current experience, it is best to locate the skill repository in the `.bob/skills` folder within your Toolkit workspace. This improves the chances of IBM Bob being able to find it and use it consistently.
+If you are using an earlier ACE version then you will need to clone the ace-flowpilot repository onto your local file system yourself.
+
+The earlier configuration steps target your ACE Toolkit workspace as the IBM Bob project root directory. To make skills available for IBM Bob Shell in this context, navigate to this ACE Toolkit workspace and, if it does not already exist, create a folder called `.bob/skills`.
 
 Clone this repository into the `.bob/skills` folder of your ACE Toolkit workspace as shown below:
 
 ![image](Images/ACE_Bob10.png)
+
+If you want to use IBM Bob across multiple ACE Toolkit workspaces, you might prefer to define ACE skills globally in your user's home directory. 
 
 ## Repository structure
 The repository is organized around the [`skills/`](skills) directory:
