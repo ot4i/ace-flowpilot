@@ -49,9 +49,9 @@ Use this skill when the user asks to create or modify `.esql` files for ACE Comp
 
 ## Database access
 
-**Do not use `PASSTHRU`** for database queries or DML. `PASSTHRU` bypasses the ACE SQL parser and is not recommended — avoid it entirely.
+**Use the native ESQL statements for queries and DML**: `SELECT`, `INSERT INTO`, `UPDATE` and `DELETE FROM`. Do not use `PASSTHRU` for what these statements can express.
 
-Use the native ACE ESQL `SELECT` and `INSERT` statement forms instead.
+Use `PASSTHRU` only for SQL that ESQL has no statement for, such as DDL or a database-specific statement. Then always pass values as `?` parameter markers with a `VALUES` clause, never by concatenating them into the SQL string. Both points are the ACE documentation's own advice for `PASSTHRU`.
 
 - `Database.DATASOURCE_NAME` must match the ODBC datasource alias configured on the runtime.
 - Omit columns that have a `DEFAULT` or `GENERATED ALWAYS` constraint.
