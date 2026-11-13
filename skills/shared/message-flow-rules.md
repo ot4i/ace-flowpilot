@@ -51,6 +51,7 @@ For example:
 
 ## Validation
 Before returning generated `.msgflow` content:
+- you MUST read [`skills/shared/FlowValidation/message-flow-validation.md`](message-flow-validation.md)
 - confirm the node types are valid
 - you MUST read the example message flow in an application project [`./ExampleApplication/Example.msgflow`]
 - confirm connector-specific rules were applied where relevant
@@ -72,3 +73,4 @@ Before returning generated `.msgflow` content:
 - [`skills/shared/ExampleAPI/retrieveWidget.subflow`]
 - [`skills/shared/ExampleAPI/updateWidget.subflow`]
 - [`skills/shared/ExampleAPI/deleteWidget.subflow`]
+- [`skills/shared/FlowValidation/message-flow-validation.md`]
