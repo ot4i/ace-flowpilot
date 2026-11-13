@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal declarations for the XMI (http://www.omg.org/XMI) attributes that
+  appear in IBM App Connect Enterprise / IIB .msgflow files.
+  Only the attributes actually used by .msgflow files are declared.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.omg.org/XMI"
+           xmlns:xmi="http://www.omg.org/XMI"
+           attributeFormDefault="qualified"
+           elementFormDefault="qualified">
+
+  <!-- xmi:version, always "2.0" on the root element -->
+  <xs:attribute name="version" type="xs:string"/>
+
+  <!-- xmi:id, unique identifier of a node or connection within the flow -->
+  <xs:attribute name="id" type="xs:ID"/>
+
+  <!-- xmi:type, "prefix:ClassName" naming the EMF type of the element -->
+  <xs:attribute name="type" type="xs:string"/>
+</xs:schema>

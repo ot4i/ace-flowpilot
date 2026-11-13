@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  XML Schema for IBM App Connect Enterprise / IBM Integration Bus message flow
+  files (*.msgflow).
+
+  A .msgflow file is an EMF/Ecore XMI serialisation. The root element is
+  ecore:EPackage (namespace http://www.eclipse.org/emf/2002/Ecore) and all of
+  its descendants are in NO namespace (unqualified), while the XMI bookkeeping
+  attributes (xmi:version, xmi:id, xmi:type) are namespace-qualified; see
+  xmi.xsd.
+
+  Structure:
+
+    ecore:EPackage
+      eClassifiers                     one per file; the message flow itself
+        eSuperTypes
+        translation                    flow display name / resource bundle
+        colorGraphic16, colorGraphic32 flow icons
+        [shortDescription] [longDescription] [version]
+        composition
+          nodes*                       the flow nodes (type given by xmi:type)
+            translation                node label
+            parameters*                promoted/override parameters (subflows)
+          connections*                 wires between node terminals
+        propertyOrganizer
+        stickyBoard
+          stickyNote*                  canvas notes
+        [patternAnnotations]           only in files generated from a pattern
+
+  REQUIRES AN XSD 1.1 PROCESSOR (xs:alternative, xs:assert, defaultOpenContent).
+
+  Node properties
+    The properties allowed on a "nodes" element depend on its xmi:type
+    (ComIbmMQInput.msgnode:FCMComposite_1 has queueName, ComIbmWSInput... has
+    URLSpecifier). GeneratedMessageFlow-Dispatch.xsd uses xs:alternative to pick, from the
+    xmi:type, IBM's definition of that node type in GeneratedMessageFlow.xsd, so a
+    node is checked for: unknown properties, properties that belong to a
+    different node type, missing required properties, and illegal values.
+    Both generated files are produced from IBM's MessageFlow.xsd by
+    build_msgflow_schemas.py; re-run it when MessageFlow.xsd changes.
+
+  Other notes
+    * The "translation" element is a TranslatableString under eClassifiers and
+      a ConstantString under nodes. Under nodes it is accepted by a wildcard in
+      the IBM types, so its content is not itself checked.
+    * xmi:id values are declared as xs:ID and the node/association references
+      as xs:IDREF, so a validating parser also checks that every connection
+      points at a node that exists.
+    * A node whose xmi:type is not recognised is checked structurally only.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xmi="http://www.omg.org/XMI"
+           xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+           targetNamespace="http://www.eclipse.org/emf/2002/Ecore"
+           elementFormDefault="unqualified"
+           attributeFormDefault="unqualified">
+
+  <xs:import namespace="http://www.omg.org/XMI" schemaLocation="xmi.xsd"/>
+
+  <!-- IBM's node definitions (generated, no target namespace) -->
+  <xs:import schemaLocation="GeneratedMessageFlow.xsd"/>
+
+  <!-- Generated: ecore:NodeElement, the "nodes" element with its xmi:type dispatch -->
+  <xs:include schemaLocation="GeneratedMessageFlow-Dispatch.xsd"/>
+
+  <!-- ================================================================== -->
+  <!-- Simple types                                                        -->
+  <!-- ================================================================== -->
+
+  <!-- Canvas position "x,y" in pixels, e.g. "51,73" -->
+  <xs:simpleType name="LocationType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?\d+,-?\d+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--
+    EMF type of a node: "<NodeType>.msgnode:FCMComposite_1" for built-in and
+    connector nodes (e.g. ComIbmMQInput.msgnode:FCMComposite_1,
+    com_ibm_connector_kafka_ComIbmOutput.msgnode:FCMComposite_1) or
+    "<SubflowName>.subflow:FCMComposite_1" for a subflow node.
+  -->
+  <xs:simpleType name="NodeTypeName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Za-z_][\w]*\.(msgnode|subflow):FCMComposite_1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- "InTerminal.in", "InTerminal.Input_1" -->
+  <xs:simpleType name="InTerminalName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="InTerminal\.\S+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- "OutTerminal.out", "OutTerminal.failure", "OutTerminal.alternate", "OutTerminal.Output_1" -->
+  <xs:simpleType name="OutTerminalName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="OutTerminal\.\S+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ================================================================== -->
+  <!-- Complex types                                                       -->
+  <!-- ================================================================== -->
+
+  <!-- translation under eClassifiers: externalised flow name -->
+  <xs:complexType name="TranslatableStringType">
+    <xs:attribute ref="xmi:type" use="required" fixed="utility:TranslatableString"/>
+    <xs:attribute name="key" type="xs:string" use="required"/>
+    <xs:attribute name="bundleName" type="xs:string" use="required"/>
+    <xs:attribute name="pluginId" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Literal string value: node labels, sticky note bodies, descriptions, version -->
+  <xs:complexType name="ConstantStringType">
+    <xs:attribute ref="xmi:type" use="required" fixed="utility:ConstantString"/>
+    <xs:attribute name="string" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Flow icon reference, e.g. platform:/plugin/MyApp/icons/full/obj16/MyFlow.gif -->
+  <xs:complexType name="GIFFileGraphicType">
+    <xs:attribute ref="xmi:type" use="required" fixed="utility:GIFFileGraphic"/>
+    <xs:attribute name="resourceName" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Reference to the supertype; always the eflow FCMBlock -->
+  <xs:complexType name="ESuperTypesType">
+    <xs:attribute name="href" type="xs:anyURI" use="required"/>
+  </xs:complexType>
+
+  <!-- Promoted / override property of a subflow node: name + expression -->
+  <xs:complexType name="ParametersType">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="expression" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Fallback for a node whose xmi:type is not recognised: structure only -->
+  <xs:complexType name="NodeType">
+    <xs:sequence>
+      <!-- Node label shown on the canvas -->
+      <xs:element name="translation" type="ecore:ConstantStringType" minOccurs="0"/>
+      <xs:element name="parameters" type="ecore:ParametersType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+
+    <!-- Always present -->
+    <!-- xmi:type must match ecore:NodeTypeName (not enforceable on an attribute reference) -->
+    <xs:attribute ref="xmi:type" use="required"/>
+    <xs:attribute ref="xmi:id" use="required"/>
+    <xs:attribute name="location" type="ecore:LocationType" use="required"/>
+
+    <!-- Properties of an unrecognised node type cannot be checked -->
+    <xs:anyAttribute namespace="##local" processContents="lax"/>
+  </xs:complexType>
+
+  <!-- A wire from a source node output terminal to a target node input terminal -->
+  <xs:complexType name="ConnectionType">
+    <xs:attribute ref="xmi:type" use="required" fixed="eflow:FCMConnection"/>
+    <xs:attribute ref="xmi:id" use="required"/>
+    <xs:attribute name="sourceNode" type="xs:IDREF" use="required"/>
+    <xs:attribute name="sourceTerminalName" type="ecore:OutTerminalName" use="required"/>
+    <xs:attribute name="targetNode" type="xs:IDREF" use="required"/>
+    <xs:attribute name="targetTerminalName" type="ecore:InTerminalName" use="required"/>
+  </xs:complexType>
+
+  <!-- The graph of nodes and connections. Nodes and connections are normally
+       grouped (nodes first), but interleaving is tolerated. -->
+  <!-- Derived from the generated TerminalCheckedType, which carries the assertion
+       that connection terminal names exist on their nodes. -->
+  <xs:complexType name="CompositionType">
+    <xs:complexContent>
+      <xs:extension base="ecore:TerminalCheckedType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:group ref="ecore:NodeElement"/>
+          <xs:element name="connections" type="ecore:ConnectionType"/>
+        </xs:choice>
+        <!-- IBM's node types make these optional so that they can be shared; every
+             node in a .msgflow file must have all three. -->
+        <xs:assert test="every $n in nodes satisfies
+                         exists($n/@location) and exists($n/@xmi:id) and exists($n/@xmi:type)"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Contents are not used by the sample flows; Toolkit writes property
+       descriptors here when properties are promoted. Kept open on purpose. -->
+  <xs:complexType name="PropertyOrganizerType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- A note on the canvas, optionally attached to a node -->
+  <xs:complexType name="StickyNoteType">
+    <xs:sequence>
+      <xs:element name="body" type="ecore:ConstantStringType"/>
+    </xs:sequence>
+    <xs:attribute name="location" type="ecore:LocationType" use="required"/>
+    <!-- One or more space-separated node ids -->
+    <xs:attribute name="association" type="xs:IDREFS"/>
+  </xs:complexType>
+
+  <xs:complexType name="StickyBoardType">
+    <xs:sequence>
+      <xs:element name="stickyNote" type="ecore:StickyNoteType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Pattern-generated flows: links a pattern parameter to a node property -->
+  <xs:complexType name="PatternAnnotationType">
+    <xs:attribute ref="xmi:type" use="required" fixed="patternAnnotation:PropertyPatternAnnotation"/>
+    <xs:attribute name="aliasId" type="xs:string" use="required"/>
+    <xs:attribute name="targetObject" type="xs:IDREF" use="required"/>
+    <xs:attribute name="targetPropertyId" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="AnnotationTargetType">
+    <xs:sequence>
+      <xs:element name="PatternAnnotation" type="ecore:PatternAnnotationType" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="targetObjects" type="xs:IDREFS" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="PatternAnnotationsType">
+    <xs:sequence>
+      <xs:element name="AnnotationTarget" type="ecore:AnnotationTargetType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- The message flow (or subflow) definition -->
+  <xs:complexType name="FlowClassifierType">
+    <xs:sequence>
+      <xs:element name="eSuperTypes" type="ecore:ESuperTypesType"/>
+      <xs:element name="translation" type="ecore:TranslatableStringType"/>
+      <xs:element name="colorGraphic16" type="ecore:GIFFileGraphicType"/>
+      <xs:element name="colorGraphic32" type="ecore:GIFFileGraphicType"/>
+      <xs:element name="shortDescription" type="ecore:ConstantStringType" minOccurs="0"/>
+      <xs:element name="longDescription" type="ecore:ConstantStringType" minOccurs="0"/>
+      <xs:element name="version" type="ecore:ConstantStringType" minOccurs="0"/>
+      <xs:element name="composition" type="ecore:CompositionType"/>
+      <xs:element name="propertyOrganizer" type="ecore:PropertyOrganizerType"/>
+      <xs:element name="stickyBoard" type="ecore:StickyBoardType"/>
+      <xs:element name="patternAnnotations" type="ecore:PatternAnnotationsType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute ref="xmi:type" use="required" fixed="eflow:FCMComposite"/>
+    <!-- Always "FCMComposite_1" -->
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <!-- Present on flows created in newer Toolkit versions -->
+    <xs:attribute name="nodeLayoutStyle" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- Root element -->
+  <xs:complexType name="EPackageType">
+    <xs:sequence>
+      <xs:element name="eClassifiers" type="ecore:FlowClassifierType"/>
+    </xs:sequence>
+    <xs:attribute ref="xmi:version" use="required" fixed="2.0"/>
+    <!-- File path of the flow within its project, e.g. "gen/RESTRequest_API.msgflow" -->
+    <xs:attribute name="nsURI" type="xs:string" use="required"/>
+    <!-- nsURI with "/" replaced by "_" -->
+    <xs:attribute name="nsPrefix" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="EPackage" type="ecore:EPackageType"/>
+
+</xs:schema>
