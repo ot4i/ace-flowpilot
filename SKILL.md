@@ -14,6 +14,9 @@ This file is a compatibility entry point. The canonical task-specific skills liv
 - [`skills/ace-esql/SKILL.md`](skills/ace-esql/SKILL.md)
 - [`skills/ace-java-compute/SKILL.md`](skills/ace-java-compute/SKILL.md)
 
+## Comparing message flows
+To compare two or more `.msgflow` files, use [`skills/ace-message-flow/SKILL.md`](skills/ace-message-flow/SKILL.md) and read [`skills/shared/message-flow-comparison.md`](skills/shared/message-flow-comparison.md) before analysing the files.
+
 ## Shared guidance
 - [`skills/shared/`](skills/shared)
 - [`skills/shared/connectors/`](skills/shared/connectors)
