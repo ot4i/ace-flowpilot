@@ -15,6 +15,7 @@ Use this skill when the user asks to create or modify Java artifacts for ACE Jav
 ## Required reading order
 1. [`skills/shared/java-guidelines.md`](../shared/java-guidelines.md)
 2. [`skills/shared/review-checklist.md`](../shared/review-checklist.md)
+3. [`skills/shared/error-handling-rules.md`](../shared/error-handling-rules.md), only when the code throws or catches exceptions, or reads the ExceptionList
 
 ## Critical rules
 - Generate ACE-compatible Java code.

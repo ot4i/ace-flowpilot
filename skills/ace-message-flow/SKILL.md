@@ -21,6 +21,7 @@ Use this skill when the user asks to create or modify ACE Toolkit `.msgflow` fil
 3. [`skills/shared/message-flow-rules.md`](../shared/message-flow-rules.md)
 4. [`skills/shared/node-types.md`](../shared/node-types.md)
 5. [`skills/shared/review-checklist.md`](../shared/review-checklist.md)
+6. If the flow has an MQ or HTTP input node, calls a database or backend, or the user asks for error handling: [`skills/ace-error-handling/SKILL.md`](../ace-error-handling/SKILL.md)
 
 ## Critical rules
 
@@ -30,6 +31,7 @@ Use this skill when the user asks to create or modify ACE Toolkit `.msgflow` fil
 - Ask for missing required node values when there is no obvious safe default.
 - Do not use this skill alone when the request also requires Compute node implementation.
 - If the request includes Compute node ESQL creation or modification, also use [`skills/ace-esql/SKILL.md`](../ace-esql/SKILL.md) and apply its guidance for the `.esql` artifact.
+- If the flow receives MQ or HTTP messages, calls a database or backend, or the user asks for error handling, also use [`skills/ace-error-handling/SKILL.md`](../ace-error-handling/SKILL.md).
 
 ## Compute node — computeExpression contract
 

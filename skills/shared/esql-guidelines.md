@@ -298,6 +298,7 @@ Always use `FIELDVALUE()` when reading leaf values from an XMLNSC tree for outpu
 
 ## Flow design considerations
 - Prefer clean flow design over wiring every failure terminal individually when a consistent catch strategy is more suitable.
+- Apply [`skills/shared/error-handling-rules.md`](error-handling-rules.md) for `THROW`, handlers, database errors and reading the ExceptionList.
 - Consider whether a subflow or shared library is more appropriate when logic is repeated.
 
 ## Validity guardrails

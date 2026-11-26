@@ -50,6 +50,15 @@ For example:
 - HTTP Input nodes require a URLSpecifier whose value starts with a leading `/` character
 If the flow includes a Compute node that reads from a specific input domain (XMLNSC, JSON, etc.), the upstream Input node's `messageDomainProperty` must be set to that domain.
 
+## Error handling for input nodes
+These rules apply to every flow with an MQ or HTTP input node, even when the user does not mention errors. Before generating the flow, you MUST read [`skills/ace-error-handling/SKILL.md`](../ace-error-handling/SKILL.md) and [`skills/shared/error-handling-rules.md`](error-handling-rules.md).
+- Wire the input node `catch` terminal to an error handler, or state in the response why the node default is acceptable.
+- Every catch flow must either handle the error (log, deliver, commit) or rethrow it (log, throw, roll back). Say which one.
+- MQ Input: keep `Transaction mode` `Yes` (the default). Ask for the `BOTHRESH` and `BOQNAME` values of the input queue, or state them as an assumption.
+- HTTP Input: every catch path ends in an HTTP Reply node with an explicit status code and a short JSON error body.
+- Do not add Try Catch nodes, Throw nodes or extra `failure` wiring unless the user asks for them.
+- End the response with an error strategy summary: where errors are caught, the transaction outcome, where failed messages go, and what is logged.
+
 ## Message Flow naming conventions
 - Message Flow names must be unique within an integration server.
 - Message Flow node names must be unique within the flow, even across node types, so for example two MQOutput nodes within the same flow each need their own name and as another example you cannot name two nodes of different types such as a Compute node and a JavaCompute node with the same name in the same message flow.
@@ -66,6 +75,7 @@ Before returning generated `.msgflow` content:
 - confirm the node types are valid
 - you MUST read the example message flow in an application project [`./ExampleApplication/Example.msgflow`]
 - confirm connector-specific rules were applied where relevant
+- confirm the error handling for input nodes rules were applied, and the response includes the error strategy summary
 - confirm any required supporting artifacts were also created or identified
 - apply the common checks in [`skills/shared/review-checklist.md`](review-checklist.md)
 

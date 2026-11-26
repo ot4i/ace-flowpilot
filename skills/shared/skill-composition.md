@@ -9,6 +9,7 @@ This document defines how ACE skills must be combined when a request spans multi
 - Use [`skills/ace-connector-flows/SKILL.md`](../ace-connector-flows/SKILL.md) when the requested work includes connector-specific message flow nodes.
 - Use [`skills/ace-esql/SKILL.md`](../ace-esql/SKILL.md) when the requested work includes `.esql` files, Compute node logic, or XMLNSC-to-JSON transformation logic.
 - Use [`skills/ace-java-compute/SKILL.md`](../ace-java-compute/SKILL.md) when the requested work includes JavaCompute implementation.
+- Use [`skills/ace-error-handling/SKILL.md`](../ace-error-handling/SKILL.md) when the requested work includes error handling, retries, backout or error logging, and when a new flow receives MQ or HTTP messages or calls a database or backend.
 
 ## Composition rules
 - If the request includes both `.msgflow` and `.esql` work, use both the relevant message flow skill and [`skills/ace-esql/SKILL.md`](../ace-esql/SKILL.md).

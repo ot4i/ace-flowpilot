@@ -18,6 +18,7 @@ Use this skill when the user asks to create or modify `.esql` files for ACE Comp
 
 1. [`skills/shared/esql-guidelines.md`](../shared/esql-guidelines.md)
 2. [`skills/shared/review-checklist.md`](../shared/review-checklist.md)
+3. [`skills/shared/error-handling-rules.md`](../shared/error-handling-rules.md), only when the ESQL raises or handles errors (`THROW`, handlers), accesses a database, or runs in a catch flow
 
 ## Critical rules
 

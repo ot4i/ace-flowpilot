@@ -46,6 +46,17 @@ encoding/<project>=UTF-8
 - `CREATE OUTPUTROOT DOMAIN(...)` does not appear anywhere — it is not valid ACE ESQL syntax.
 - There is no such built-in ESQL function named `RANDOM` although there is a built-in function named `RAND`
 
+### Error handling
+- Every input node has a deliberate error strategy: its `catch` terminal is wired to an error handler, or the response states why the node default is acceptable.
+- Every catch flow either handles the error (log, deliver, commit) or rethrows it (log, throw, roll back). No catch flow ends silently.
+- No empty ESQL handler (`DECLARE ... HANDLER ... BEGIN END;`) and no Java `catch` block that swallows an exception.
+- `THROW USER EXCEPTION` uses `SEVERITY 3` and a message number in the user range 2951 to 2999 unless the user provided a custom catalog. A Throw node uses a message number in the range 3001 to 3049.
+- MQ input flows state the `BOTHRESH` and `BOQNAME` assumptions, or wire the MQ Input `failure` terminal, so a poison message cannot block the queue.
+- MQ input flows that must not lose messages use `Transaction mode` `Yes`, not `Automatic` or `No`.
+- A Compute node `Transaction` property is `Commit` only when the user asked for database work to survive a flow rollback.
+- Every catch path in an HTTP flow ends in an HTTP Reply node with an explicit status code and does not expose internal error details. The status is set in `OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode`, or in `HTTPReplyHeader` created before any body folder (`BIP6062W`).
+- Every handled error is logged with flow name, failing node, error number, root cause text and a correlation id.
+
 ### Simplicity
 - The flow topology is the minimum required to satisfy the request. Do not add Compute nodes, ESQL files, or transformation logic unless the user explicitly asked for transformation. A direct wire from Input to Reply is correct for a pass-through or echo pattern.
 
@@ -58,3 +69,4 @@ encoding/<project>=UTF-8
 - [`skills/shared/ace-projects.md`](ace-projects.md)
 - [`skills/shared/policy-projects.md`](policy-projects.md)
 - [`skills/shared/message-flow-rules.md`](message-flow-rules.md)
+- [`skills/shared/error-handling-rules.md`](error-handling-rules.md)

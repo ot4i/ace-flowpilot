@@ -104,6 +104,7 @@ The repository is organized around the [`skills/`](skills) directory:
 - [`skills/ace-project-setup/`](skills/ace-project-setup) contains the Bob skill for ACE Toolkit application and policy project scaffolding
 - [`skills/ace-esql/`](skills/ace-esql) contains the Bob skill for ACE ESQL generation and refinement
 - [`skills/ace-java-compute/`](skills/ace-java-compute) contains the Bob skill for ACE JavaCompute generation and refinement
+- [`skills/ace-error-handling/`](skills/ace-error-handling) contains the Bob skill for ACE error handling design and review
 - [`skills/shared/`](skills/shared) contains shared ACE project, policy, version, review, and node type guidance
 - [`skills/shared/connectors/`](skills/shared/connectors) contains connector-specific guidance files
 - [`Images/`](Images) contains setup screenshots used in this README
@@ -114,6 +115,7 @@ The repository is organized around the [`skills/`](skills) directory:
 - [`ace-project-setup`](skills/ace-project-setup/SKILL.md)
 - [`ace-esql`](skills/ace-esql/SKILL.md)
 - [`ace-java-compute`](skills/ace-java-compute/SKILL.md)
+- [`ace-error-handling`](skills/ace-error-handling/SKILL.md)
 
 ## Canonical locations
 - The main compatibility entry point is [`SKILL.md`](SKILL.md).

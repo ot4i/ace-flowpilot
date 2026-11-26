@@ -13,6 +13,7 @@ This file is a compatibility entry point. The canonical task-specific skills liv
 - [`skills/ace-project-setup/SKILL.md`](skills/ace-project-setup/SKILL.md)
 - [`skills/ace-esql/SKILL.md`](skills/ace-esql/SKILL.md)
 - [`skills/ace-java-compute/SKILL.md`](skills/ace-java-compute/SKILL.md)
+- [`skills/ace-error-handling/SKILL.md`](skills/ace-error-handling/SKILL.md)
 
 ## Shared guidance
 - [`skills/shared/`](skills/shared)
