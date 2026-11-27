@@ -40,14 +40,14 @@
 
 *Add improvements for ESQL handling*
  * Add rules for BROKER SCHEMA to match with subdirectory locations of ESQL files: [https://github.com/ot4i/ace-bob/pull/12]
- * Add rules for Compute and Filter module properties: TO DO
- * Add rules about usage of templates for CopyMessageHeaders() and CopyEntireMessage(): TO DO
- * Provide guidance on when to use SHARED and EXTERNAL variables: TO DO
- * Provide guidance on using COALESCE() function when reading potential nulls: TO DO
- * Provide guidance on using PROPAGATE and RETURN FALSE/TRUE depending on desire to suppress default propagation: TO DO
- * Provide guidance on standard practice for using Environment.Variables: TO DO
- * Provide guidance for message flow naming conventions: TO DO
- * Provide guidance to avoid unconnected nodes (incorporating allowance for Input nodes and Label nodes): TO DO
+ * Add rules for Compute and Filter module properties: [https://github.com/ot4i/ace-flowpilot/pull/3]
+ * Add rules about usage of templates for CopyMessageHeaders() and CopyEntireMessage(): [https://github.com/ot4i/ace-flowpilot/pull/26]
+ * Provide guidance on when to use SHARED and EXTERNAL variables: [https://github.com/ot4i/ace-flowpilot/pull/22] and [https://github.com/ot4i/ace-flowpilot/pull/23]
+ * Provide guidance on using COALESCE() function when reading potential nulls: [https://github.com/ot4i/ace-flowpilot/pull/18]
+ * Provide guidance on using PROPAGATE and RETURN FALSE/TRUE depending on desire to suppress default propagation: [https://github.com/ot4i/ace-flowpilot/pull/25]
+ * Provide guidance on standard practice for using Environment.Variables: [https://github.com/ot4i/ace-flowpilot/pull/24]
+ * Provide guidance for message flow naming conventions: [https://github.com/ot4i/ace-flowpilot/pull/27]
+ * Provide guidance to avoid unconnected nodes (incorporating allowance for Input nodes and Label nodes): [https://github.com/ot4i/ace-flowpilot/pull/21]
 
 *Add improvements for Map handling*
  * Add dedicated shared guidance for Maps and `.map` file generation.
